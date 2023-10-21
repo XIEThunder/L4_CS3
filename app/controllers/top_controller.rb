@@ -8,8 +8,10 @@ class TopController < ApplicationController
   end
 
   def login
-    if User.find_by(uid: params[:uid]) and User.find_by(pass: params[:pass])
+    hashed_password = BCrypt::Password.create('pass')
+    if BCrypt::Password.new(hashed_password) == 'pass'
       session[:login_uid] = params[:uid]
+      puts "logged in!"
       redirect_to top_main_path
     else
       render "error"
